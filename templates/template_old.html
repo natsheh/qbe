@@ -1,0 +1,12 @@
+<!doctype html>
+</html>
+	<header>
+		<meta http-equiv="Content-Type'" content="text/html; charset=utf-8"/>
+		<meta content="utf-8" http-equiv="encoding">
+		<title>Query by Example Results</title>
+	</header>
+	<body>
+		<table>
+			<tr><td>TfIdf</td><td>subj</td><td>verb</td><td>obj</td><td>adv</td><td>average</td><td>ssoa</td></tr><tr><td><table>{% for t in tfidf %}<tr>{% for i in t %}<td>{{ i }}</td>{% endfor %}</tr>{% endfor %}</table></td><td><table>{% for t in subj %}<tr>{% for i in t %}<td>{{ i }}</td>{% endfor %}</tr>{% endfor %}</table></td><td><table>{% for t in verb %}<tr>{% for i in t %}<td>{{ i }}</td>{% endfor %}</tr>{% endfor %}</table></td><td><table>{% for t in obj %}<tr>{% for i in t %}<td>{{ i }}</td>{% endfor %}</tr>{% endfor %}</table></td><td><table>{% for t in adv %}<tr>{% for i in t %}<td>{{ i }}</td>{% endfor %}</tr>{% endfor %}</table></td><td><table>{% for t in average %}<tr>{% for i in t %}<td>{{ i }}</td>{% endfor %}</tr>{% endfor %}</table></td><td><table>{% for t in ssoa %}<tr>{% for i in t %}<td>{{ i }}</td>{% endfor %}</tr>{% endfor %}</table></td></tr></table>
+		</body>
+</html>
