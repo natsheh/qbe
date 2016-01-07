@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="RESTful API for Query-by-Example that uses semetics to match text">
+    <meta name="author" content="Hussein AL-NATSHEH, ISH-Lyon, CNRS. UI using twitter-bootstrap, jquery and knockout">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <title>ISH Query by Example: Exercise in Stype Expirement</title>
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="index.html"> ISH QbE Experiment: "Exercise-in-Style, Book by Raymond Queneau"</a>
+
+                </div>
+                <!-- /.navbar-header -->
+                <div class="navbar-default sidebar" role="navigation">
+                    <div class="sidebar-nav navbar-collapse">
+                        <ul class="nav" id="side-menu">
+                            <li>
+                                _<image src="Logo_ISH.png" alt="ISH Logo" width="200">
+                            </li>
+                            <li>
+                                <a href="http://localhost:5000/Parse" target=_blank>1: Parse Documents</a>
+                            </li>
+                            <li>
+                                <a href="http://localhost:5000/Read" target=_blank>2: Read Data</a>
+                            </li>
+                            <li>
+                                <a href="index.html"> 3: Query by Example</a>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Query Builder and Design Parameters Tuning</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Query Form
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <form role="form" action="http://localhost:5000/Query" method="post" target="_blank">
+                                        <div class="form-group">
+                                            <label>Run for:</label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="global" value=True data-bind="checked: showDocs">all EiS documents
+                                            </label>
+                                        </div>
+                                        <div class="form-group" data-bind="visible:!showDocs()">
+                                            <label>Please choose the query document:</label>
+                                            <!-- ko foreach: doc -->
+                                            <label class="radio-inline">
+                                                    <input type="radio" name="query" data-bind="value: doc_id" checked=True>
+                                                        <b data-bind="text: doc_id"></b>
+                                             </label>
+                                            <!-- /ko -->
+                                        <div class="form-group" style="display:none">
+                                            <label>Please choose the query document:</label>
+                                            <select class="form-control">
+                                                <!-- ko foreach: doc -->
+                                                <option name="query" data-bind="text: doc_id, value: doc_id"></option>
+                                                <!-- /ko -->
+                                            </select>
+                                        </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Method: </label>
+                                            <label >
+                                                <input type="checkbox" name="method" id="optionsRadiosInline1" value="tfidf">TF-IDF
+                                            </label>
+                                            <label >
+                                                <input type="checkbox" name="method" id="optionsRadiosInline2" value="qbe"  checked=True data-bind="checked: showQbeDiv">Standard QbE
+                                            </label>
+                                            <label >
+                                                <input type="checkbox" name="method" id="optionsRadiosInline3" value="custom_weight_qbe" data-bind="checked: showCustomDiv">Custom Weghting QbE
+                                            </label>
+                                        </div>
+                                        <div class="form-group" data-bind="visible:showQbeDiv()">
+                                            <label>Wieghting Schema: </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="weight" id="optionsRadios1" value="subj" checked>Subject Only
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="weight" id="optionsRadios2" value="verb">Verb Only
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="weight" id="optionsRadios3" value="obj">Object Only
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="weight" id="optionsRadios4" value="adv">Adverb Only
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="weight" id="optionsRadios5" value="average">Average
+                                            </label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Top n: </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="topn" id="optionsRadios1" value=7>Top exact number of targeted documents
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="topn" id="optionsRadios2" value=10>Top 20%
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="topn" id="optionsRadios3" value=50 checked>All
+                                            </label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Normalize the value of the score:</label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="norm" value=True >Normalize [0, 1]
+                                            </label>
+                                        </div>
+                                        <div class="form-group" data-bind="visible:showCustomDiv()">
+                                            <p class="help-block" >The summation of the four POS wieghting values should equal to 1.0</p>
+                                            <label>Subject weight</label><input name="subj" type="text" class="form-control" value="0.59">
+                                            <label>Verb    weight</label><input name="verb" type="text" class="form-control" value="0.01">
+                                            <label>Object  weight</label><input name="obj" type="text" class="form-control" value="0.29">
+                                            <label>Adverb  weight</label><input name="adv" type="text" class="form-control" value="0.11">
+                                        </div>
+                                        <button type="submit" class="btn btn-default">Query by Example</button>
+                                        <button type="reset" class="btn btn-default">Reset Button</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../dist/js/sb-admin-2.js"></script>
+    <script type="text/javascript">
+    function EiS_DocViewModel() {
+        var self = this;
+        self.EiSURI = 'http://127.0.0.1:5000/Eis';
+        self.doc = ko.observableArray();
+        self.showQbeDiv = ko.observable(true);
+        self.showCustomDiv = ko.observable(false);
+        self.showDocs = ko.observable(true);
+        self.ajax = function(uri, method, data) {
+            var request = {
+                url: uri,
+                type: method,
+                contentType: "application/json",
+                Origin: 'http://127.0.0.1:5000/Eis'
+            };
+            return $.ajax(request);
+        }
+
+        self.ajax(self.EiSURI, 'GET').done(function(data) {
+            for (var i = 0; i < data.doc.length; i++) {
+                self.doc.push({
+                    doc_id: ko.observable(data.doc[i])
+                });
+            }
+        });
+    }
+    ko.applyBindings(new EiS_DocViewModel(), $('#page-wrapper')[0]);
+    </script>
+
+    <script type="text/javascript">// This is for allowing only one checkbox option
+    $('input[type="checkbox"]').on('change', function() {
+    $('input[name="' + this.name + '"]').not(this).prop('checked', false);
+    });
+    </script>
+
+</body>
+
+</html>
