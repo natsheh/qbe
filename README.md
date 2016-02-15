@@ -1,3 +1,3 @@
-# qbe: Semantic-based Query by Example lib
+# qbe: Semantic-based Query by Example API
 
-run qbe_api.py (requiers the data which is niot yet pulished)
+run qbe_api.py (requiers data files which are not yet pulished)
