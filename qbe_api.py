@@ -5,7 +5,7 @@
 # Usage example; requests.post('http://localhost:5000/Query', data = {"query":"EiS_Notation","weight":"average"}).content
 
 from flask import Flask, make_response, make_response, request, current_app
-from flask.ext.httpauth import HTTPBasicAuth
+from flask_httpauth import HTTPBasicAuth
 from flask_restful import Resource, Api, reqparse
 
 from sklearn.metrics import precision_score, recall_score, f1_score, roc_auc_score
